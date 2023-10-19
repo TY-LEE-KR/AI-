@@ -1,0 +1,10 @@
+x_train_filepath: ./dataset/train
+y_train_filepath: ./dataset/y_train.csv
+model_filepath: model_weights.pth
+x_test_filepath: ./dataset/test
+y_test_filepath: ./dataset/y_test.csv
+y_pred_filepath: y_pred.csv
+y_rand_pred_filepath: y_rand_pred.csv
+random_score_filepath: random_score.txt
+model_score_filepath: model_score.txt
+score_order: high

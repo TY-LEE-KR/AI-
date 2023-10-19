@@ -1,0 +1,8 @@
+__pycache__
+.vscode
+dataset_pic/
+*.zip
+*.txt
+*_pred.csv
+*.pth
+my_data_test.py
