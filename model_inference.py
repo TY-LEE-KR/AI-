@@ -2,6 +2,7 @@ import csv
 import sys
 import os
 import torch
+import timm
 from train import MLP
 import torch.nn as nn
 import torchvision.transforms as transforms
@@ -12,10 +13,10 @@ from tqdm import tqdm
 class TestDataset(Dataset):
     def __init__(self, image_folder, transform=None):
         img = []
-        img_name = os.listdir(image_folder)
-        for img_name in img_name:
+        img_names = os.listdir(image_folder)
+        for img_name in img_names:
             img.append(image_folder + '/' + img_name)
-        self.images = img
+        self.images = sorted(img)
         self.transform = transform
 
     def __len__(self):
@@ -24,7 +25,12 @@ class TestDataset(Dataset):
     def __getitem__(self, idx):
         image = self.images[idx]
 
-        img = Image.open(image).convert("RGB")
+        img = Image.open(image)
+
+        if img.mode == 'RGB':
+            pass
+        else:
+            img = img.convert('RGB')
 
         if self.transform is not None:
             img = self.transform(img)
@@ -40,18 +46,16 @@ def save_resluts_as_csv(results_list, output_file):
 
 def main():
 
-    # model_path = sys.argv[1]
-    # x_test_path = sys.argv[2]
-    # y_pred_save_path = sys.argv[3]
+    model_path = sys.argv[1]
+    x_test_path = sys.argv[2]
+    y_pred_save_path = sys.argv[3]
 
-    model_path = "model_weights.pth"
-    x_test_path = "./dataset/test"
-    y_pred_save_path = "y_pred.csv"
-
-    transform = transforms.Compose([transforms.Resize((64, 64)),
+    transform = transforms.Compose([transforms.Resize((224, 224)),
                                 transforms.ToTensor()])
 
-    model = MLP()
+    # model = MLP()
+    model = timm.create_model('vit_base_patch16_224', pretrained=True)
+    model.head = nn.Linear(768, 26, bias=True)
     model.load_state_dict(torch.load(model_path))
 
     test_dataset = TestDataset(x_test_path, transform=transform)

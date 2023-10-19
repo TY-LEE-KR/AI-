@@ -1,12 +1,9 @@
 import csv
 import sys
 
-y_test_path = "./dataset/y_test.csv"
-y_pred_path = "y_pred.csv"
-score_save_path = "model_score.txt"
-# y_test_path = sys.argv[1]
-# y_pred_path = sys.argv[2]
-# score_save_path = sys.argv[3]
+y_test_path = sys.argv[1]
+y_pred_path = sys.argv[2]
+score_save_path = sys.argv[3]
 
 
 def read_csv_file(file_path):
